@@ -30,30 +30,21 @@ public class CheckUser {
     public Object checkUser(ProceedingJoinPoint joinPoint) throws Throwable {
 
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-
         HttpServletRequest request = servletRequestAttributes.getRequest();
-
         String uidStr = request.getHeader("uid");
 
         if (uidStr == null || uidStr.isEmpty()) {
             return new TestResponseDTO(0, "请使用用户UID访问", null);
         }
-
         try {
             int uid = Integer.parseInt(uidStr);
-
             User user = userRepository.getByUid(uid);
-
             if (user == null) {
                 return new TestResponseDTO(0, "用户信息不存在", null);
             }
-
             return joinPoint.proceed();
-
         } catch (Exception e) {
             return new TestResponseDTO(0, "用户UID错误", null);
         }
-
     }
-
 }
